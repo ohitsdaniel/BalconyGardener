@@ -42,7 +42,7 @@ function getSensorData($params)
 			$currentSensorDataJson = "";
 		}	
 		
-		$rowData = "{\"time\": " . $row["TIMESTAMP"] . ", \"value\": " . $row["VALUE"] . "}";
+		$rowData = "{\"time\": \"" . $row["TIMESTAMP"] . "\", \"value\": " . $row["VALUE"] . "}";
 			
 		if($currentSensorDataJson != "")
 		{
