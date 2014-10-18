@@ -50,17 +50,21 @@ function getSensorData($params)
 		}
 		$currentSensorDataJson .= $rowData;
 	}	
-	$json = writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson);
+	$json = writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, true);
 	$json .= "}";
 	return $json;
 }
 
-function writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson)
+function writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, $last=false)
 {
 	if($currentSensorJson != "")
 	{
 		$currentSensorJson .= $currentSensorDataJson;
-		$currentSensorJson .= "], ";
+		$currentSensorJson .= "]";
+		if(!$last)
+		{
+			$currentSensorJson .= ", ";
+		}
 	}
 	$json .= $currentSensorJson;
 	
