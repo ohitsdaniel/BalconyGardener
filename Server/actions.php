@@ -93,14 +93,14 @@ function getSingleSensorData($name, $count)
 {	
 	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
 	$where = "WHERE Sensors.NAME = \"$name\"";
-	return querySensorData($on, $where);
+	return querySensorData($on, $where, $count);
 }
 
 function getAllSensorData($count)
 {
 	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
 	$where = "";
-	return querySensorData($on, $where);
+	return querySensorData($on, $where, $count);
 }
 
 function querySensorData($on, $where, $count)
