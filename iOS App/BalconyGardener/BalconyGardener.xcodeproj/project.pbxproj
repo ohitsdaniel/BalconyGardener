@@ -14,6 +14,8 @@
 		512F9CDC19F29D41001A35BF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 512F9CDB19F29D41001A35BF /* Images.xcassets */; };
 		512F9CDF19F29D41001A35BF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 512F9CDD19F29D41001A35BF /* LaunchScreen.xib */; };
 		512F9CEB19F29D41001A35BF /* BalconyGardenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F9CEA19F29D41001A35BF /* BalconyGardenerTests.swift */; };
+		5156B52619F31B8D00F5A762 /* flower.png in Resources */ = {isa = PBXBuildFile; fileRef = 5156B52519F31B8D00F5A762 /* flower.png */; };
+		5156B52819F3286600F5A762 /* waterdropButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5156B52719F3286600F5A762 /* waterdropButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		512F9CE419F29D41001A35BF /* BalconyGardenerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BalconyGardenerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		512F9CE919F29D41001A35BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		512F9CEA19F29D41001A35BF /* BalconyGardenerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalconyGardenerTests.swift; sourceTree = "<group>"; };
+		5156B52519F31B8D00F5A762 /* flower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower.png; sourceTree = "<group>"; };
+		5156B52719F3286600F5A762 /* waterdropButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdropButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 		512F9CCE19F29D41001A35BF /* BalconyGardener */ = {
 			isa = PBXGroup;
 			children = (
+				5156B52519F31B8D00F5A762 /* flower.png */,
+				5156B52719F3286600F5A762 /* waterdropButton.png */,
 				512F9CD119F29D41001A35BF /* AppDelegate.swift */,
 				512F9CD619F29D41001A35BF /* ViewController.swift */,
 				512F9CD819F29D41001A35BF /* Main.storyboard */,
@@ -195,9 +201,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5156B52619F31B8D00F5A762 /* flower.png in Resources */,
 				512F9CDA19F29D41001A35BF /* Main.storyboard in Resources */,
 				512F9CDF19F29D41001A35BF /* LaunchScreen.xib in Resources */,
 				512F9CDC19F29D41001A35BF /* Images.xcassets in Resources */,
+				5156B52819F3286600F5A762 /* waterdropButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +419,7 @@
 				512F9CF019F29D41001A35BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		512F9CF119F29D41001A35BF /* Build configuration list for PBXNativeTarget "BalconyGardenerTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +428,7 @@
 				512F9CF319F29D41001A35BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
