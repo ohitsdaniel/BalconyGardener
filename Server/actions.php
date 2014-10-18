@@ -6,22 +6,22 @@ function execute_action($action, $data)
 	{
 		case "getSensorData":
 			echo getSensorData($data);
-		break;
+			break;
 		case "sensors":
 		case "getSensors":
 			echo getSensors();
-		break;
+			break;
 		case "infoPlantWatered":
 			addWaterPlantLog("Galileo");
-		default:
+			break;
 		case "waterPlant":
 			addWaterPlantLog("App");
 			echo "Plant Watered!";
-		default:
+			break;
 		case "getWateringLog":
 			echo getWateringLog($data);
 		default:
-		break;
+			break;
 	}
 }
 
