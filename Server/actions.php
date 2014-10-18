@@ -21,22 +21,28 @@ function getSensorData($params)
 	if(isset($params["sensorName"]))
 	{
 		$data = getSingleSensorData($params["sensorName"]);
-		echo "single:" . $params["sensorName"];
 	}
 	else
 	{
 		$data = getAllSensorData();
-		echo "all";
 	}
-	mysql_error();
-	echo ";".$data.";";
 	$json = "{";
 	
+	$currentSensor = "";
+	$currentSensorJson = "";
 	while($row = mysql_fetch_array($data, MYSQL_ASSOC))
 	{
-		$json = $row["SENSOR_NAME"] . "@" . $row["TIMESTAMP"] . ": " . $row["VALUE"];
-	}
-	
+		if($row["SENSOR_NAME"] != $currentSensor)
+		{
+			$json .= $currentSensorJson;
+			$currentSensorJson = "";
+			$currentSensor = $row["SENSOR_NAME"];
+		}	
+		else
+		{
+			$json = $row["SENSOR_NAME"] . "@" . $row["TIMESTAMP"] . ": " . $row["VALUE"];
+		}
+	}	
 	$json .= "}";
 	return $json;
 }
