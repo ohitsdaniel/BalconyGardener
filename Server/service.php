@@ -1,16 +1,15 @@
 <?php
 
-	$db = mysql_connect("localhost", "xampp", "root");
+	$db = mysql_connect("localhost", "balcony", "gardener");
 	
 	if($db)
 	{
 		if(mysql_select_db("balcony"))
 		{
-			$res = mysql_query("SELECT * FROM SensorValues");
-			$res = mysql_fetch_array($res, MYSQL_ASSOC);
-			foreach($res as $r)
+			$res = mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID)");
+			while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 			{
-				echo $r["VALUE"];
+				echo $row["SENSOR_NAME"] . "@" . $row["TIMESTAMP"] . ": " . $row["VALUE"] . "</br>";
 			}
 	
 		}
