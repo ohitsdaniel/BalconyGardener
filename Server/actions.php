@@ -28,13 +28,13 @@ function execute_action($action, $data)
 
 function addWaterPlantLog($trigger, $data)
 {
-	$interval = 0;
-	if(isset($data["interval"]))
+	$duration = 0;
+	if(isset($data["duration"]))
 	{
-		$interval = $data["interval"];
+		$duration = $data["duration"];
 	}
 	
-	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY, INTERVAL) VALUES ('Plant watered', '$trigger', $interval);";
+	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY, DURATION) VALUES ('Plant watered', '$trigger', $duration);";
 	
 	mysql_query($query);
 }
@@ -168,7 +168,7 @@ function getWateringLog($data)
 	$logs = "";
 	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 	{
-		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\", \"interval\": " . $row["INTERVAL"] . "}";
+		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\", \"duration\": " . $row["DURATION"] . "}";
 		if($logs != "")
 		{
 			$logs .= ", ";
