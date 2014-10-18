@@ -18,13 +18,20 @@ function execute_action($action, $data)
 function getSensorData($params)
 {	
 	$data = null;
+	$count = null;
+	
+	if(isset($params["count"]))
+	{
+		$count = $params["count"];
+	}
+	
 	if(isset($params["sensorName"]))
 	{
-		$data = getSingleSensorData($params["sensorName"]);
+		$data = getSingleSensorData($params["sensorName"], $count);
 	}
 	else
 	{
-		$data = getAllSensorData();
+		$data = getAllSensorData($count);
 	}
 	$json = "{";
 	
@@ -71,14 +78,27 @@ function writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, $las
 	return $json;
 }
 
-function getSingleSensorData($name)
+function limitString($count)
 {
-	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) WHERE Sensors.NAME = \"$name\" ORDER BY SensorValues.TIMESTAMP ASC");
+	$limit = "";
+	if(0 != $count)
+	{
+		$limit = " LIMIT $count";
+	}
+	
+	return $limit;
+}
+
+function getSingleSensorData($name, $count)
+{
+
+	
+	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) WHERE Sensors.NAME = \"$name\" ORDER BY SensorValues.TIMESTAMP ASC" . limitString($count));
 }
 
 function getAllSensorData()
 {
-	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) ORDER BY Sensors.ID ASC, SensorValues.TIMESTAMP ASC");
+	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) ORDER BY Sensors.ID ASC, SensorValues.TIMESTAMP ASC" . limitString($count));
 }
 
 function getSensors()
