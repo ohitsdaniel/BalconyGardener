@@ -10,9 +10,18 @@ function execute_action($action, $data)
 		case "sensors":
 			echo getSensors();
 		break;
+		case "waterPlant":
+			waterPlant();
+			echo "Plant Watered!";
 		default:
 		break;
 	}
+}
+
+function waterPlant()
+{
+	$query = "INSERT INTO Log SET ACTION='Plant watered'";
+	mysql_query($query);
 }
 
 function getSensorData($params)
