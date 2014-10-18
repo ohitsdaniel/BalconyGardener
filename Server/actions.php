@@ -91,12 +91,27 @@ function limitString($count)
 
 function getSingleSensorData($name, $count)
 {	
-	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) WHERE Sensors.NAME = \"$name\" ORDER BY SensorValues.TIMESTAMP ASC" . limitString($count));
+	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
+	$where = "WHERE Sensors.NAME = \"$name\"";
+	return getSensorData($on, $where);
 }
 
 function getAllSensorData($count)
 {
-	return mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) ORDER BY Sensors.ID ASC, SensorValues.TIMESTAMP ASC" . limitString($count));
+	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
+	$where = "";
+	return getSensorData($on, $where);
+}
+
+function getSensorData($on, $where)
+{
+	$vars = "set @num := 0, @sensor := '';";
+	$select = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP, @num := if(@sensor = SENSOR_NAME, @num + 1, 1) as row_number, @sensor := SENSOR_NAME as dummy FROM SensorValues force index(sensor) LEFT JOIN Sensors ";
+	$orderBy = "GROUP BY SENSOR_NAME, VALUE, TIMESTAMP ORDER BY SensorValues.TIMESTAMP DESC HAVING row_number < $count";
+
+	$query = $vars . $select . $on . $where . $orderBy;
+	echo $query;
+	return mysql_query($query);
 }
 
 function getSensors()
