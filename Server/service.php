@@ -8,7 +8,7 @@
 	{
 		if(mysql_select_db("balcony"))
 		{
-			execute_action($__GET["action"]);
+			execute_action($_GET["action"], $_GET);
 		}
 		else
 		{

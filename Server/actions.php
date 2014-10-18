@@ -15,18 +15,21 @@ function execute_action($action, $data)
 	}
 }
 
-function getSensorData($data)
+function getSensorData($params)
 {	
 	$data = null;
-	if(isset($data["sensorName"]))
+	if(isset($params["sensorName"]))
 	{
-		$data = getSingleSensorData($data["sensorName"]);
+		$data = getSingleSensorData($params["sensorName"]);
+		echo "single:" . $params["sensorName"];
 	}
 	else
 	{
 		$data = getAllSensorData();
+		echo "all";
 	}
-
+	mysql_error();
+	echo ";".$data.";";
 	$json = "{";
 	
 	while($row = mysql_fetch_array($data, MYSQL_ASSOC))
