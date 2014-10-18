@@ -103,11 +103,11 @@ function getAllSensorData($count)
 	return querySensorData($on, $where);
 }
 
-function querySensorData($on, $where)
+function querySensorData($on, $where, $count)
 {
 	$vars = "set @num := 0, @sensor := '';";
 	$select = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP, @num := if(@sensor = SENSOR_NAME, @num + 1, 1) as row_number, @sensor := SENSOR_NAME as dummy FROM SensorValues force index(sensor) LEFT JOIN Sensors ";
-	$orderBy = "GROUP BY SENSOR_NAME, VALUE, TIMESTAMP ORDER BY SensorValues.TIMESTAMP DESC HAVING row_number < $count";
+	$orderBy = " GROUP BY SENSOR_NAME, VALUE, TIMESTAMP ORDER BY SensorValues.TIMESTAMP DESC HAVING row_number < $count";
 
 	$query = $vars . $select . $on . $where . $orderBy;
 	echo $query;
