@@ -1,4 +1,6 @@
 <?php
+	
+	include 'actions.php';
 
 	$db = mysql_connect("localhost", "balcony", "gardener");
 	
@@ -6,12 +8,7 @@
 	{
 		if(mysql_select_db("balcony"))
 		{
-			$res = mysql_query("SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID)");
-			while($row = mysql_fetch_array($res, MYSQL_ASSOC))
-			{
-				echo $row["SENSOR_NAME"] . "@" . $row["TIMESTAMP"] . ": " . $row["VALUE"] . "</br>";
-			}
-	
+			execute_action($__GET["action"]);
 		}
 		else
 		{
