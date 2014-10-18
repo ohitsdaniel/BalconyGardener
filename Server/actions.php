@@ -21,6 +21,9 @@ function execute_action($action, $data)
 		case "getWateringLog":
 			echo getWateringLog($data);
 			break;
+		case "insertSensorData":
+			echo insertSensorData($data);
+			break;
 		default:
 			break;
 	}
@@ -179,6 +182,32 @@ function getWateringLog($data)
 	$json .="]}";
 
 	return $json;
+}
+
+function getSensorIdByName($name)
+{
+	$res = mysql_query("SELECT ID FROM Sensors WHERE NAME = '$name'");
+	$row = mysql_fetch_array($res, MYSQL_ASSOC);
+	return $row["ID"];	
+}
+
+function insertSensorData($data)
+{
+	$id = null;
+	if(isset($data["sensorName"]))
+	{
+		$id = getSensorIdByName($data["sensorName"]);
+	}	
+	
+	$value = null;
+	if(isset($data["sensorName"]))
+	{
+		$id = getSensorIdByName($data["sensorName"]);
+	}
+	
+	$query = "INSERT INTO SensorValues (ID, VALUE) VALUES ($id, $value);";
+	
+	mysql_query($query);
 }
 
 ?>
