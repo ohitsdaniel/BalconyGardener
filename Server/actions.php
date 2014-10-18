@@ -198,15 +198,17 @@ function insertSensorData($data)
 	{
 		$id = getSensorIdByName($data["sensorName"]);
 	}	
+	echo $id;	
 	
-	$value = null;
+	$value = 0;
 	if(isset($data["value"]))
 	{
-		$id = getSensorIdByName($data["value"]);
+		$value = $data["value"];
 	}
 	
-	$query = "INSERT INTO SensorValues (ID, VALUE) VALUES ($id, $value);";
-	
+	echo $value;	
+	$query = "INSERT INTO SensorValues (SENSOR_ID, VALUE) VALUES ($id, $value);";
+	echo $query;	
 	mysql_query($query);
 }
 
