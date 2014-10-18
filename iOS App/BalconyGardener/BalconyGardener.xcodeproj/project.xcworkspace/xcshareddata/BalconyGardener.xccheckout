@@ -10,14 +10,14 @@
 	<string>BalconyGardener</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>A8EFA6328B9EA13A0250D1A342646C968561DAE9</key>
+		<key>EB382F5109018D1122782D496920471CBBEF6DAD</key>
 		<string>https://github.com/DanXMuc/BalconyGardener.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>iOS App/BalconyGardener/BalconyGardener.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>A8EFA6328B9EA13A0250D1A342646C968561DAE9</key>
+		<key>EB382F5109018D1122782D496920471CBBEF6DAD</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>A8EFA6328B9EA13A0250D1A342646C968561DAE9</string>
+	<string>EB382F5109018D1122782D496920471CBBEF6DAD</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>A8EFA6328B9EA13A0250D1A342646C968561DAE9</string>
+			<string>EB382F5109018D1122782D496920471CBBEF6DAD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>BalconyGardener</string>
 		</dict>
