@@ -8,19 +8,26 @@ function execute_action($action, $data)
 			echo getSensorData($data);
 		break;
 		case "sensors":
+		case "getSensors":
 			echo getSensors();
 		break;
+		case "infoPlantWatered":
+			addWaterPlantLog("Galileo");
+		default:
 		case "waterPlant":
-			waterPlant();
+			addWaterPlantLog("App");
 			echo "Plant Watered!";
+		default:
+		case "getWateringLog":
+			getWateringLog($data);
 		default:
 		break;
 	}
 }
 
-function waterPlant()
+function addWaterPlantLog($trigger)
 {
-	$query = "INSERT INTO Log SET ACTION='Plant watered'";
+	$query = "INSERT INTO Log SET ACTION='Plant watered', SET TRIGGER='$trigger'";
 	mysql_query($query);
 }
 
@@ -75,13 +82,6 @@ function getSensorData($params)
 	return $json;
 }
 
-function writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, $last=false)
-{
-	
-	
-	return $json;
-}
-
 function limitString($count)
 {
 	$limit = "";
@@ -120,13 +120,6 @@ function getAllSensorData($count)
 	return $sensorData;
 }
 
-function querySensorData($on, $where, $count)
-{
-
-	$query = $vars . $select . $on . $where . $orderBy;
-	return mysql_query($query);
-}
-
 function getSensors()
 {
 	$res = mysql_query("SELECT Sensors.* FROM Sensors");
@@ -148,6 +141,30 @@ function getSensors()
 	$json .="]}";
 	
 	return $json;	
+}
+
+function getWateringLog($data)
+{
+	$limit =limitString($data["count"]);
+	$res = mysql_query("SELECT Log.* FROM Log $limit");
+	$json = "";
+	$json .= "{";
+
+	$json .= "\"wateringLogs\": [";
+	$logs = "";
+	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
+	{
+		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGER"] . "\", \"action\": \"" . $row["ACTION"]."\"}";
+		if($logs != "")
+		{
+			$logs .= ", ";
+		}
+		$logs .= $log;
+	}
+	$json .= $logs;
+	$json .="]}";
+
+	return $json;
 }
 
 ?>
