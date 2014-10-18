@@ -33,7 +33,7 @@ function addWaterPlantLog($trigger)
 
 function getSensorData($params)
 {	
-	$sensorData[];
+	$sensorData = [];
 	$count = null;
 	
 	if(isset($params["count"]))
@@ -82,7 +82,7 @@ function getSensorData($params)
 	return $json;
 }
 
-function limitString($count)
+function limitString($count = 0)
 {
 	$limit = "";
 	if(0 != $count)
@@ -145,7 +145,13 @@ function getSensors()
 
 function getWateringLog($data)
 {
-	$limit =limitString($data["count"]);
+	$count = 0;
+	if(isset($data["count"]))
+	{
+		$count = $data["count"];
+	}
+	
+	$limit =limitString($count);
 	$res = mysql_query("SELECT Log.* FROM Log $limit");
 	$json = "";
 	$json .= "{";
