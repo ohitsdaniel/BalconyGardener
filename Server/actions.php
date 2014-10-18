@@ -30,18 +30,26 @@ function getSensorData($params)
 	
 	$currentSensor = "";
 	$currentSensorJson = "";
+	$currentSensorDataJson = "";
 	while($row = mysql_fetch_array($data, MYSQL_ASSOC))
 	{
 		if($row["SENSOR_NAME"] != $currentSensor)
 		{
 			$json .= $currentSensorJson;
-			$currentSensorJson = "";
 			$currentSensor = $row["SENSOR_NAME"];
+			$currentSensorJson = "\"" . $currentSensor . "\": [";
 		}	
 		else
-		{
-			$json = $row["SENSOR_NAME"] . "@" . $row["TIMESTAMP"] . ": " . $row["VALUE"];
+		{	
+			$data = "{\"time\": " . $row["TIMESTAMP"] . ", \"value\": " . $row["VALUE"] . "}";
+			
+			if($currentSensorDataJson != "")
+			{
+				$currentSensorDataJson .= ", ";
+			}
+			$currentSensorDataJson .= $data;
 		}
+		$json .= "]";
 	}	
 	$json .= "}";
 	return $json;
