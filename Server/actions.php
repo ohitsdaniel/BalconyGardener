@@ -152,7 +152,7 @@ function getWateringLog($data)
 	}
 	
 	$limit =limitString($count);
-	$res = mysql_query("SELECT Log.* FROM Log $limit");
+	$res = mysql_query("SELECT Log.* FROM Log ORDER BY TIMESTAMP DESC $limit");
 	
 	$json = "";
 	$json .= "{";
