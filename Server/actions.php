@@ -6,18 +6,45 @@ function execute_action($action, $data)
 	{
 		case "getSensorData":
 			echo getSensorData($data);
-		break;
+			break;
 		case "sensors":
+		case "getSensors":
 			echo getSensors();
-		break;
+			break;
+		case "infoPlantWatered":
+			addWaterPlantLog("Galileo", $data);
+			break;
+		case "waterPlant":
+			addWaterPlantLog("App", $data);
+			echo "Plant Watered!";
+			break;
+		case "getWateringLog":
+			echo getWateringLog($data);
+			break;
+		case "insertSensorData":
+			echo insertSensorData($data);
+			break;
 		default:
-		break;
+			break;
 	}
+}
+
+function addWaterPlantLog($trigger, $data)
+{
+	$duration = 0;
+	if(isset($data["duration"]))
+	{
+		$duration = $data["duration"];
+	}
+	
+	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY, DURATION) VALUES ('Plant watered', '$trigger', $duration);";
+	
+	mysql_query($query);
 }
 
 function getSensorData($params)
 {	
-	$data = null;
+	$sensorData = [];
 	$count = null;
 	
 	if(isset($params["count"]))
@@ -27,59 +54,46 @@ function getSensorData($params)
 	
 	if(isset($params["sensorName"]))
 	{
-		$data = getSingleSensorData($params["sensorName"], $count);
+		$sensorData[$params["sensorName"]] = getSingleSensorData($params["sensorName"], $count);
 	}
 	else
 	{
-		$data = getAllSensorData($count);
+		$sensorData = getAllSensorData($count);
 	}
 	
 	$json = "{";
 	
-	$currentSensor = "";
-	$currentSensorJson = "";
-	$currentSensorDataJson = "";
-	while($row = mysql_fetch_array($data, MYSQL_ASSOC))
+	$i = 1;
+	foreach($sensorData as $sensorName => $data)
 	{
-		if($row["SENSOR_NAME"] != $currentSensor)
-		{
-			$json = writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson);
-			
-			$currentSensor = $row["SENSOR_NAME"];
-			$currentSensorJson = "\"" . $currentSensor . "\": [";
-			$currentSensorDataJson = "";
-		}	
+		$currentSensorJson = "\"" . $sensorName . "\": [";
+		$currentSensorDataJson = "";
 		
-		$rowData = "{\"time\": \"" . $row["TIMESTAMP"] . "\", \"value\": " . $row["VALUE"] . "}";
-			
-		if($currentSensorDataJson != "")
-		{
-			$currentSensorDataJson .= ", ";
+		while($row = mysql_fetch_array($data, MYSQL_ASSOC))
+		{			
+			$rowData = "{\"time\": \"" . $row["TIMESTAMP"] . "\", \"value\": " . $row["VALUE"] . "}";
+				
+			if($currentSensorDataJson != "")
+			{
+				$currentSensorDataJson .= ", ";
+			}
+			$currentSensorDataJson .= $rowData;
 		}
-		$currentSensorDataJson .= $rowData;
-	}	
-	$json = writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, true);
+		
+		$currentSensorJson .= $currentSensorDataJson;
+		$currentSensorJson .= "]";
+		if($i != count($sensorData))
+		{
+			$currentSensorJson .= ", ";
+		}
+		$json .= $currentSensorJson;
+		++$i;
+	}
 	$json .= "}";
 	return $json;
 }
 
-function writeDataToJSon($json, $currentSensorJson, $currentSensorDataJson, $last=false)
-{
-	if($currentSensorJson != "")
-	{
-		$currentSensorJson .= $currentSensorDataJson;
-		$currentSensorJson .= "]";
-		if(!$last)
-		{
-			$currentSensorJson .= ", ";
-		}
-	}
-	$json .= $currentSensorJson;
-	
-	return $json;
-}
-
-function limitString($count)
+function limitString($count = 0)
 {
 	$limit = "";
 	if(0 != $count)
@@ -92,28 +106,28 @@ function limitString($count)
 
 function getSingleSensorData($name, $count)
 {	
-	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
-	$where = "WHERE Sensors.NAME = \"$name\"";
-	return querySensorData($on, $where, $count);
+	$limit = limitString($count);
+	$query = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) WHERE Sensors.NAME = \"$name\" ORDER BY SensorValues.TIMESTAMP DESC $limit";
+	return mysql_query($query);
 }
 
 function getAllSensorData($count)
 {
-	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
-	$where = "";
-	return querySensorData($on, $where, $count);
-}
-
-function querySensorData($on, $where, $count)
-{
-	$vars = "set @num := 0, @sensor := '';";
-	$vars = "";
-
-	$select = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP, @num := if(@sensor = Sensors.NAME, @num + 1, 1) as row_number, @sensor := Sensors.NAME as dummy FROM SensorValues LEFT JOIN Sensors ";
-	$orderBy = " GROUP BY Sensors.NAME, VALUE, TIMESTAMP HAVING row_number <= $count ORDER BY Sensors.NAME ASC, SensorValues.TIMESTAMP DESC";
-
-	$query = $vars . $select . $on . $where . $orderBy;
-	return mysql_query($query);
+	$res = mysql_query("SELECT Sensors.* FROM Sensors");
+	$sensors = [];
+	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
+	{
+		$sensors[] = $row["NAME"];
+	}
+	
+	$sensorData = [];
+	
+	foreach($sensors as $sensor)
+	{
+		$sensorData[$sensor] = getSingleSensorData($sensor, $count);
+	}
+	
+	return $sensorData;
 }
 
 function getSensors()
@@ -137,6 +151,63 @@ function getSensors()
 	$json .="]}";
 	
 	return $json;	
+}
+
+function getWateringLog($data)
+{
+	$count = 0;
+	if(isset($data["count"]))
+	{
+		$count = $data["count"];
+	}
+	
+	$limit =limitString($count);
+	$res = mysql_query("SELECT Log.* FROM Log ORDER BY TIMESTAMP DESC $limit");
+	
+	$json = "";
+	$json .= "{";
+
+	$json .= "\"wateringLogs\": [";
+	$logs = "";
+	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
+	{
+		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\", \"duration\": " . $row["DURATION"] . "}";
+		if($logs != "")
+		{
+			$logs .= ", ";
+		}
+		$logs .= $log;
+	}
+	$json .= $logs;
+	$json .="]}";
+
+	return $json;
+}
+
+function getSensorIdByName($name)
+{
+	$res = mysql_query("SELECT ID FROM Sensors WHERE NAME = '$name'");
+	$row = mysql_fetch_array($res, MYSQL_ASSOC);
+	return $row["ID"];	
+}
+
+function insertSensorData($data)
+{
+	$id = null;
+	if(isset($data["sensorName"]))
+	{
+		$id = getSensorIdByName($data["sensorName"]);
+	}	
+	
+	$value = null;
+	if(isset($data["value"]))
+	{
+		$id = getSensorIdByName($data["value"]);
+	}
+	
+	$query = "INSERT INTO SensorValues (ID, VALUE) VALUES ($id, $value);";
+	
+	mysql_query($query);
 }
 
 ?>
