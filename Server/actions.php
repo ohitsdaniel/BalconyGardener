@@ -8,7 +8,7 @@ function execute_action($action)
 			getData();
 		break;
 		case "sensors":
-			getSensors();
+			echo getSensors();
 		break;
 		default:
 		break;
@@ -30,12 +30,20 @@ function getSensors()
 	$json = "";
 	$json .= "{";
 	
-	$json .= "sensors: ";
+	$json .= "\"sensors\": [";
+	$sensors = "";
 	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 	{
-		$json .= "[\"name\: \"" .$row["SENSOR_NAME"] ."\"],";
-	}	
-	$json .="}";
+		
+		$sensor = "\"" . $row["NAME"] ."\"";
+		if($sensors != "")
+		{
+			$sensors .= ", ";
+		}
+		$sensors .= $sensor;
+	}
+	$json .= $sensors;	
+	$json .="]}";
 	
 	return $json;	
 }
