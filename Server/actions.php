@@ -12,22 +12,29 @@ function execute_action($action, $data)
 			echo getSensors();
 			break;
 		case "infoPlantWatered":
-			addWaterPlantLog("Galileo");
+			addWaterPlantLog("Galileo", $data);
 			break;
 		case "waterPlant":
-			addWaterPlantLog("App");
+			addWaterPlantLog("App", $data);
 			echo "Plant Watered!";
 			break;
 		case "getWateringLog":
 			echo getWateringLog($data);
+			break;
 		default:
 			break;
 	}
 }
 
-function addWaterPlantLog($trigger)
+function addWaterPlantLog($trigger, $data)
 {
-	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY) VALUES ('Plant watered', '$trigger');";
+	$interval = 0;
+	if(isset($data["interval"]))
+	{
+		$interval = $data["interval"];
+	}
+	
+	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY, INTERVAL) VALUES ('Plant watered', '$trigger', $interval);";
 	
 	mysql_query($query);
 }
@@ -161,7 +168,7 @@ function getWateringLog($data)
 	$logs = "";
 	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 	{
-		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\"}";
+		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\", \"interval\": " . $row["INTERVAL"] . "}";
 		if($logs != "")
 		{
 			$logs .= ", ";
