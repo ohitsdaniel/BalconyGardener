@@ -35,7 +35,12 @@ function getSensorData($params)
 	{
 		if($row["SENSOR_NAME"] != $currentSensor)
 		{
+			if($currentSensorJson != "")
+			{
+				$json .= "]";
+			}
 			$json .= $currentSensorJson;
+			
 			$currentSensor = $row["SENSOR_NAME"];
 			$currentSensorJson = "\"" . $currentSensor . "\": [";
 		}	
@@ -49,7 +54,6 @@ function getSensorData($params)
 			}
 			$currentSensorDataJson .= $data;
 		}
-		$json .= "]";
 	}	
 	$json .= "}";
 	return $json;
