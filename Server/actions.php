@@ -27,7 +27,8 @@ function execute_action($action, $data)
 
 function addWaterPlantLog($trigger)
 {
-	$query = "INSERT INTO Log SET ACTION='Plant watered', SET TRIGGER='$trigger'";
+	$query = "INSERT INTO Log (ACTION, TRIGGERED_BY) VALUES ('Plant watered', '$trigger');";
+	
 	mysql_query($query);
 }
 
