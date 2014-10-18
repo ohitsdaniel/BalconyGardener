@@ -161,7 +161,7 @@ function getWateringLog($data)
 	$logs = "";
 	while($row = mysql_fetch_array($res, MYSQL_ASSOC))
 	{
-		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGER"] . "\", \"action\": \"" . $row["ACTION"]."\"}";
+		$log = "{\"timestamp\": \"" . $row["TIMESTAMP"] ."\", \"trigger\": \"". $row["TRIGGERED_BY"] . "\", \"action\": \"" . $row["ACTION"]."\"}";
 		if($logs != "")
 		{
 			$logs .= ", ";
