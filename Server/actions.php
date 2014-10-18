@@ -37,25 +37,25 @@ function getSensorData($params)
 		{
 			if($currentSensorJson != "")
 			{
-				$json .= "]";
+				$currentSensorJson .= $currentSensorDataJson;
+				$currentSensorJson .= "], ";
 			}
 			$json .= $currentSensorJson;
 			
 			$currentSensor = $row["SENSOR_NAME"];
 			$currentSensorJson = "\"" . $currentSensor . "\": [";
+			$currentSensorDataJson = "";
 		}	
-		else
-		{	
-			$data = "{\"time\": " . $row["TIMESTAMP"] . ", \"value\": " . $row["VALUE"] . "}";
+		$rowData = "{\"time\": " . $row["TIMESTAMP"] . ", \"value\": " . $row["VALUE"] . "}";
 			
-			if($currentSensorDataJson != "")
-			{
-				$currentSensorDataJson .= ", ";
-			}
-			$currentSensorDataJson .= $data;
+		if($currentSensorDataJson != "")
+		{
+			$currentSensorDataJson .= ", ";
 		}
+		$currentSensorDataJson .= $rowData;
 	}	
-	$json .= "}";
+	$json .= $currentSensorJson;
+	$json .= "]}";
 	return $json;
 }
 
