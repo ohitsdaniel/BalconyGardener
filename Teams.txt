@@ -1,0 +1,13 @@
+Teams:
+
+Server:
+Thomas, Johannes
+
+iOS:
+Daniel, Thomas
+
+Android:
+Mark, Peter
+
+Board:
+Lars, Bernd
