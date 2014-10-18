@@ -34,7 +34,6 @@ function getSensorData($params)
 		$data = getAllSensorData($count);
 	}
 	
-	
 	$json = "{";
 	
 	$currentSensor = "";
@@ -108,11 +107,12 @@ function getAllSensorData($count)
 function querySensorData($on, $where, $count)
 {
 	$vars = "set @num := 0, @sensor := '';";
+	$vars = "";
+
 	$select = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP, @num := if(@sensor = Sensors.NAME, @num + 1, 1) as row_number, @sensor := Sensors.NAME as dummy FROM SensorValues LEFT JOIN Sensors ";
-	$orderBy = " GROUP BY Sensors.NAME, VALUE, TIMESTAMP ORDER BY SensorValues.TIMESTAMP DESC HAVING row_number <= $count";
+	$orderBy = " GROUP BY Sensors.NAME, VALUE, TIMESTAMP HAVING row_number <= $count ORDER BY Sensors.NAME ASC, SensorValues.TIMESTAMP DESC";
 
 	$query = $vars . $select . $on . $where . $orderBy;
-	echo $query;
 	return mysql_query($query);
 }
 
