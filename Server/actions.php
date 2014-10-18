@@ -19,7 +19,7 @@ function execute_action($action, $data)
 			echo "Plant Watered!";
 		default:
 		case "getWateringLog":
-			getWateringLog($data);
+			echo getWateringLog($data);
 		default:
 		break;
 	}
@@ -33,7 +33,7 @@ function addWaterPlantLog($trigger)
 
 function getSensorData($params)
 {	
-	$sensorData[];
+	$sensorData = [];
 	$count = null;
 	
 	if(isset($params["count"]))
@@ -97,7 +97,6 @@ function getSingleSensorData($name, $count)
 {	
 	$limit = limitString($count);
 	$query = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP FROM SensorValues LEFT JOIN Sensors ON (SensorValues.SENSOR_ID=Sensors.ID) WHERE Sensors.NAME = \"$name\" ORDER BY SensorValues.TIMESTAMP DESC $limit";
-	echo $query;
 	return mysql_query($query);
 }
 
@@ -112,7 +111,7 @@ function getAllSensorData($count)
 	
 	$sensorData = [];
 	
-	foreach($sensor as $sensors)
+	foreach($sensors as $sensor)
 	{
 		$sensorData[$sensor] = getSingleSensorData($sensor, $count);
 	}
@@ -147,6 +146,7 @@ function getWateringLog($data)
 {
 	$limit =limitString($data["count"]);
 	$res = mysql_query("SELECT Log.* FROM Log $limit");
+	
 	$json = "";
 	$json .= "{";
 
