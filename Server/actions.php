@@ -93,17 +93,17 @@ function getSingleSensorData($name, $count)
 {	
 	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
 	$where = "WHERE Sensors.NAME = \"$name\"";
-	return getSensorData($on, $where);
+	return querySensorData($on, $where);
 }
 
 function getAllSensorData($count)
 {
 	$on = "ON (SensorValues.SENSOR_ID=Sensors.ID)";
 	$where = "";
-	return getSensorData($on, $where);
+	return querySensorData($on, $where);
 }
 
-function getSensorData($on, $where)
+function querySensorData($on, $where)
 {
 	$vars = "set @num := 0, @sensor := '';";
 	$select = "SELECT Sensors.NAME as SENSOR_NAME, SensorValues.VALUE, SensorValues.TIMESTAMP, @num := if(@sensor = SENSOR_NAME, @num + 1, 1) as row_number, @sensor := SENSOR_NAME as dummy FROM SensorValues force index(sensor) LEFT JOIN Sensors ";
