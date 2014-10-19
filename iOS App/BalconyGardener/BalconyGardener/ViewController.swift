@@ -28,6 +28,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         // "http://146.0.40.96/balconygardener/service.php?action=sensors"
         let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=getSensorData&count=1")
         session.dataTaskWithURL(url, completionHandler:didReceiveSensorData).resume()
+        
     }
     
     override func viewDidLoad() {
@@ -46,7 +47,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBAction func waterButtonPushed(sender: AnyObject) {
         var session = NSURLSession.sharedSession()
-        let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=waterPlant")
+        let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=waterPlant&duration=10")
         session.dataTaskWithURL(url).resume()
         
         waterSignalSentText.hidden = false
@@ -61,10 +62,11 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     
     func didReceiveSensorData( data : NSData!, response: NSURLResponse!, error: NSError! ) {
-        var error: NSErrorPointer = nil
+        var error: NSErrorPointer = NSErrorPointer()
         
         println( "data is \(data)" )
         var json : AnyObject? = NSJSONSerialization.JSONObjectWithData( data, options: NSJSONReadingOptions.MutableContainers, error:error )
+        
         if let jsonUnboxed = json as Dictionary<String, AnyObject>? {
             
             sensorValues = jsonUnboxed
@@ -87,7 +89,7 @@ class ViewController: UIViewController, UITableViewDataSource {
             
             tableView.reloadData()
             
-            println( "JSON is \(json)" )
+         //   println( "JSON is \(json)" )
         }
         
     }
@@ -109,7 +111,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "details" {
-            (segue.destinationViewController as DetailsViewController).sensorIdentifier = "\(tableView.cellForRowAtIndexPath(tableView.indexPathForSelectedRow()!))"
+            (segue.destinationViewController as DetailsViewController).sensorIdentifier = "\(tableView.cellForRowAtIndexPath(tableView.indexPathForSelectedRow()!)!.detailTextLabel!.text!)"
         }
     }
 
