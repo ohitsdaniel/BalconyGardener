@@ -19,13 +19,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     var sensorValues = Dictionary<String, AnyObject>()
     @IBOutlet weak var tableView: UITableView!
     
-    private struct SensorData{
-        let sensorName:String
-        let timeStamp:String
-        let value:Double
-        
-    }
-    
+    @IBOutlet weak var waterSignalSentText: UILabel!
+
     private var sensorValueArr = [SensorData]()
     
     func loadSensorData() {
@@ -39,6 +34,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         loadSensorData()
         
+        NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "loadSensorData", userInfo: nil, repeats: true)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -46,6 +43,22 @@ class ViewController: UIViewController, UITableViewDataSource {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func waterButtonPushed(sender: AnyObject) {
+        var session = NSURLSession.sharedSession()
+        let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=waterPlant")
+        session.dataTaskWithURL(url).resume()
+        
+        waterSignalSentText.hidden = false
+        
+        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "hideWaterText", userInfo: nil, repeats: false)
+        
+    }
+    
+    func hideWaterText(){
+        waterSignalSentText.hidden = true
+    }
+    
     
     func didReceiveSensorData( data : NSData!, response: NSURLResponse!, error: NSError! ) {
         var error: NSErrorPointer = nil
@@ -70,17 +83,6 @@ class ViewController: UIViewController, UITableViewDataSource {
                 var dataToAdd = SensorData(sensorName: x.0, timeStamp: time, value: val)
                 
                 sensorValueArr.append(dataToAdd)
-                
-                /*switch x.0{
-                case "Humidity":
-                    sensorValueArr[SensorType.Humidity.toRaw()] = dataToAdd
-                case "Temperature":
-                    sensorValueArr[SensorType.Temperature.toRaw()] = dataToAdd
-                case "Moisture":
-                    sensorValueArr[SensorType.Moisture.toRaw()] = dataToAdd
-                default:
-                    println("")
-                }*/
             }
             
             tableView.reloadData()
@@ -105,7 +107,17 @@ class ViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
-
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "details" {
+            (segue.destinationViewController as DetailsViewController).sensorIdentifier = "\(tableView.cellForRowAtIndexPath(tableView.indexPathForSelectedRow()!))"
+        }
+    }
 
 }
 
+struct SensorData{
+    let sensorName:String
+    let timeStamp:String
+    let value:Double
+}
+    

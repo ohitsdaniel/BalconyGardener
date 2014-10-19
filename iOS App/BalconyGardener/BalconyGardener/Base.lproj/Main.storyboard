@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="53" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3lg-L4-c46">
-                                <rect key="frame" x="269" y="72" width="315" height="520"/>
+                                <rect key="frame" x="304" y="72" width="280" height="520"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MeasurementCell" textLabel="Hlk-fZ-ufN" detailTextLabel="UnC-FD-NXd" rowHeight="53" style="IBUITableViewCellStyleSubtitle" id="g6h-9T-Nsw" customClass="MeasurementCell" customModule="BalconyGardener" customModuleProvider="target">
@@ -39,26 +39,72 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="cC0-zX-p4y" kind="show" identifier="details" id="emD-bB-Rh3"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="fVk-TA-3Fd"/>
                                 </connections>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U04-10-D8e">
-                                <rect key="frame" x="16" y="72" width="245" height="520"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="flower.png" translatesAutoresizingMaskIntoConstraints="NO" id="U04-10-D8e">
+                                <rect key="frame" x="16" y="72" width="280" height="520"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="blh-az-UDv">
+                                <rect key="frame" x="16" y="490" width="80" height="102"/>
+                                <state key="normal" image="waterdropButton.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleShadowColor" red="0.87614639945652173" green="0.87614639945652173" blue="0.87614639945652173" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleShadowColor" red="0.896484375" green="0.896484375" blue="0.896484375" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="waterButtonPushed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="y79-fe-G15"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Watering Signal sent" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYU-Gz-fGz">
+                                <rect key="frame" x="104" y="530" width="158" height="21"/>
+                                <color key="backgroundColor" red="0.87614639949999995" green="0.87614639949999995" blue="0.87614639949999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.91741677989130432" green="0.0" blue="0.010815110957410619" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Pq8-OK-C0k"/>
+                    <navigationItem key="navigationItem" id="nFJ-3i-hTv"/>
                     <connections>
                         <outlet property="tableView" destination="3lg-L4-c46" id="V8p-ps-8Tx"/>
+                        <outlet property="waterSignalSentText" destination="cYU-Gz-fGz" id="m7i-yu-JRE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1117" y="392"/>
+        </scene>
+        <!--Details View Controller-->
+        <scene sceneID="yTM-aO-LEA">
+            <objects>
+                <viewController id="cC0-zX-p4y" customClass="DetailsViewController" customModule="BalconyGardener" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="58d-tc-cSg"/>
+                        <viewControllerLayoutGuide type="bottom" id="bfn-pL-yhl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5Di-LX-NEA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="tfM-IN-XOu"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gYP-lV-87Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821" y="392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8iJ-m9-pcR">
@@ -79,4 +125,8 @@
             <point key="canvasLocation" x="305" y="1055"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="flower.png" width="1969" height="3200"/>
+        <image name="waterdropButton.png" width="119" height="155"/>
+    </resources>
 </document>

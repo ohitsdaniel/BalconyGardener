@@ -16,6 +16,7 @@
 		512F9CEB19F29D41001A35BF /* BalconyGardenerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F9CEA19F29D41001A35BF /* BalconyGardenerTests.swift */; };
 		5156B52619F31B8D00F5A762 /* flower.png in Resources */ = {isa = PBXBuildFile; fileRef = 5156B52519F31B8D00F5A762 /* flower.png */; };
 		5156B52819F3286600F5A762 /* waterdropButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 5156B52719F3286600F5A762 /* waterdropButton.png */; };
+		5156B52A19F3405C00F5A762 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5156B52919F3405C00F5A762 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		512F9CEA19F29D41001A35BF /* BalconyGardenerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalconyGardenerTests.swift; sourceTree = "<group>"; };
 		5156B52519F31B8D00F5A762 /* flower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower.png; sourceTree = "<group>"; };
 		5156B52719F3286600F5A762 /* waterdropButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterdropButton.png; sourceTree = "<group>"; };
+		5156B52919F3405C00F5A762 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				512F9CD119F29D41001A35BF /* AppDelegate.swift */,
 				512F9CD619F29D41001A35BF /* ViewController.swift */,
 				512F9CD819F29D41001A35BF /* Main.storyboard */,
+				5156B52919F3405C00F5A762 /* DetailsViewController.swift */,
 				512F9CDB19F29D41001A35BF /* Images.xcassets */,
 				512F9CDD19F29D41001A35BF /* LaunchScreen.xib */,
 				512F9CD319F29D41001A35BF /* BalconyGardener.xcdatamodeld */,
@@ -226,6 +229,7 @@
 				512F9CD719F29D41001A35BF /* ViewController.swift in Sources */,
 				512F9CD519F29D41001A35BF /* BalconyGardener.xcdatamodeld in Sources */,
 				512F9CD219F29D41001A35BF /* AppDelegate.swift in Sources */,
+				5156B52A19F3405C00F5A762 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
