@@ -19,6 +19,7 @@
 		5156B52A19F3405C00F5A762 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5156B52919F3405C00F5A762 /* DetailsViewController.swift */; };
 		7AE602EC05ECECBDC0769E7C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64231AA32DBB49A8B41DC8FD /* libPods.a */; };
 		936777D019F3AB3800F95557 /* BCPlotViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 936777CF19F3AB3800F95557 /* BCPlotViewController.m */; };
+		936777D319F3B6A000F95557 /* BCPlotDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 936777D219F3B6A000F95557 /* BCPlotDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		936777CD19F3AB3800F95557 /* BalconyGardener-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BalconyGardener-Bridging-Header.h"; sourceTree = "<group>"; };
 		936777CE19F3AB3800F95557 /* BCPlotViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCPlotViewController.h; sourceTree = "<group>"; };
 		936777CF19F3AB3800F95557 /* BCPlotViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCPlotViewController.m; sourceTree = "<group>"; };
+		936777D119F3B6A000F95557 /* BCPlotDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCPlotDataSource.h; sourceTree = "<group>"; };
+		936777D219F3B6A000F95557 /* BCPlotDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCPlotDataSource.m; sourceTree = "<group>"; };
 		F39D6C1E5B8B154153A13D83 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,12 +99,14 @@
 		512F9CCE19F29D41001A35BF /* BalconyGardener */ = {
 			isa = PBXGroup;
 			children = (
+				512F9CD819F29D41001A35BF /* Main.storyboard */,
 				5156B52519F31B8D00F5A762 /* flower.png */,
 				5156B52719F3286600F5A762 /* waterdropButton.png */,
 				512F9CD119F29D41001A35BF /* AppDelegate.swift */,
 				512F9CD619F29D41001A35BF /* ViewController.swift */,
-				512F9CD819F29D41001A35BF /* Main.storyboard */,
 				5156B52919F3405C00F5A762 /* DetailsViewController.swift */,
+				936777D119F3B6A000F95557 /* BCPlotDataSource.h */,
+				936777D219F3B6A000F95557 /* BCPlotDataSource.m */,
 				936777CE19F3AB3800F95557 /* BCPlotViewController.h */,
 				936777CF19F3AB3800F95557 /* BCPlotViewController.m */,
 				512F9CDB19F29D41001A35BF /* Images.xcassets */,
@@ -292,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				936777D319F3B6A000F95557 /* BCPlotDataSource.m in Sources */,
 				512F9CD719F29D41001A35BF /* ViewController.swift in Sources */,
 				512F9CD519F29D41001A35BF /* BalconyGardener.xcdatamodeld in Sources */,
 				512F9CD219F29D41001A35BF /* AppDelegate.swift in Sources */,
