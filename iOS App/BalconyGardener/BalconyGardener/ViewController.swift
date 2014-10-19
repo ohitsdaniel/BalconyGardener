@@ -64,7 +64,7 @@ class ViewController: UIViewController, UITableViewDataSource {
     func didReceiveSensorData( data : NSData!, response: NSURLResponse!, error: NSError! ) {
         var error: NSErrorPointer = NSErrorPointer()
         
-        println( "data is \(data)" )
+        // println( "data is \(data)" )
         var json : AnyObject? = NSJSONSerialization.JSONObjectWithData( data, options: NSJSONReadingOptions.MutableContainers, error:error )
         
         if let jsonUnboxed = json as Dictionary<String, AnyObject>? {
@@ -112,6 +112,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "details" {
             (segue.destinationViewController as DetailsViewController).sensorIdentifier = "\(tableView.cellForRowAtIndexPath(tableView.indexPathForSelectedRow()!)!.detailTextLabel!.text!)"
+        }
+        
+        if segue.identifier == "detail" {
+            (segue.destinationViewController as BCPlotViewController).sensorIdentifier = "\(tableView.cellForRowAtIndexPath(tableView.indexPathForSelectedRow()!)!.detailTextLabel!.text!)"
         }
     }
 
