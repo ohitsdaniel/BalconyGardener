@@ -193,8 +193,7 @@ function getWateringLog($data)
 
 function shouldWater($data)
 {
-	$limit = limitString($count);
-	$res = mysql_query("SELECT COUNT(ID) AS CNT, DURATION FROM WaterRequests WHERE TIMESTAMP_EXECUTED=NULL ORDER BY TIMESTAMP DESC LIMIT 1");
+	$res = mysql_query("SELECT COUNT(ID) AS CNT, WaterRequests.DURATION FROM WaterRequests WHERE TIMESTAMP_EXECUTED IS NULL ORDER BY TIMESTAMP DESC LIMIT 1");
 
 	$row = mysql_fetch_array($res, MYSQL_ASSOC);
 	return ($row["CNT"] == 0 ? 0 : $row["DURATION"]);
@@ -230,7 +229,7 @@ function addWaterRequest($data)
 	$duration = 0;
 	if(isset($data["duration"]))
 	{
-		$value = $data["duration"];
+		$value = $duration["duration"];
 	}
 
 	$query = "INSERT INTO WaterRequests (DURATION) VALUES ($duration);";
