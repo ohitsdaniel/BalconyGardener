@@ -35,6 +35,8 @@ class ViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         loadSensorData()
         
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
         NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "loadSensorData", userInfo: nil, repeats: true)
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -87,7 +89,7 @@ class ViewController: UIViewController, UITableViewDataSource {
                 sensorValueArr.append(dataToAdd)
             }
             
-            tableView.reloadData()
+            dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
             
          //   println( "JSON is \(json)" )
         }
@@ -105,7 +107,6 @@ class ViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("MeasurementCell", forIndexPath:indexPath ) as UITableViewCell
         cell.textLabel?.text = "\(sensorValueArr[indexPath.row].value)"
         cell.detailTextLabel?.text = "\(sensorValueArr[indexPath.row].sensorName)"
-        cell.backgroundColor = UIColor.yellowColor()
         return cell
     }
     
