@@ -25,7 +25,7 @@
     self.dataSource.hostView = self.view;
     
     // [self internalInit];
-    self.view.backgroundColor = [UIColor yellowColor];
+    // self.view.backgroundColor = [UIColor yellowColor];
     // Do any additional setup after loading the view.
 }
 

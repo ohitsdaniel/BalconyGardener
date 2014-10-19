@@ -43,10 +43,10 @@
         graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
 #if TARGET_OS_IPHONE
         [graph applyTheme:[CPTTheme themeNamed:kCPTPlainWhiteTheme]];
-        graph.paddingLeft = 0.;
-        graph.paddingRight = 0.;
-        graph.paddingTop = 0.;
-        graph.paddingBottom = 0.;
+        graph.paddingLeft = 20.;
+        graph.paddingRight = 20.;
+        graph.paddingTop = 20.;
+        graph.paddingBottom = 20.;
         CPTMutableLineStyle *borderStyle = [[CPTMutableLineStyle alloc] init];
         borderStyle.lineWidth = 0.;
         graph.borderLineStyle = borderStyle;
@@ -75,9 +75,6 @@
         timeFormatter.referenceDate = [NSDate dateWithTimeIntervalSince1970:0.];
         
         axisSet.xAxis.labelFormatter            = dateFormatter;
-        
-        
-        [self adjustTimeScale];
         [self generateLegend];
         
         graph.defaultPlotSpace.allowsUserInteraction = YES;
@@ -109,7 +106,8 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
-    return self.sensorData[index]; // [@(fieldEnum)];
+    NSDictionary *valueDict = self.sensorData[index];
+    return valueDict[@"value"]; // [@(fieldEnum)];
 }
 
 - (CPTPlotRange *)plotSpace:(CPTPlotSpace *)space
@@ -170,8 +168,8 @@ double exp10( double value ) {
     x.orthogonalCoordinateDecimal = CPTDecimalFromFloat( 0. );
     axisSet.yAxis.orthogonalCoordinateDecimal = CPTDecimalFromDouble( currentDisplayRange.location );
     
-    x.majorIntervalLength   = CPTDecimalFromFloat(oneDay / 4.);
-    x.minorTicksPerInterval = 5;
+    // x.majorIntervalLength   = CPTDecimalFromFloat(oneDay / 4.);
+    // x.minorTicksPerInterval = 5;
     x.labelFormatter         = timeFormatter;
 }
 
@@ -210,21 +208,25 @@ double exp10( double value ) {
     minValue = MAXFLOAT;
     maxValue = 0.;
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    // this is imporant - we set our input date format to match our input string
-    // if format doesn't match you'll get nil from your string, so be careful
-    [dateFormatter setDateFormat:@"dd-MM-yyyy HH:MM:SS"];
-    NSDate *dateFromString = [[NSDate alloc] init];
+    NSDateFormatter *dateUnFormatter = [[NSDateFormatter alloc] init];
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    [dateUnFormatter setLocale:locale];
+    [dateUnFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+    // does not work...
+    [dateUnFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     
     for( NSDictionary *d in self.sensorData ) {
         NSString *t = d[@"time"];
-        NSDate *dateValue = [dateFormatter dateFromString:t];
-        minDate = MAX( minDate, [dateValue timeIntervalSince1970] );
-        maxDate = MIN( maxDate, [dateValue timeIntervalSince1970] );
+        NSDate *dateValue = [dateUnFormatter dateFromString:t];
+        NSTimeInterval secs = [dateValue timeIntervalSince1970];
+        minDate = secs < minDate ? secs : minDate;
+        maxDate = secs > maxDate ? secs : maxDate;
+
         
         double v = [d[@"value"] doubleValue];
-        minValue = MAX( minValue, v );
-        maxValue = MIN( maxValue, v );
+        minValue =  v < minValue ? v : minValue; // MAX( minValue, v );
+        maxValue = v > maxValue ? v : maxValue; // MIN( maxValue, v );
     }
     
     startDate = [NSDate dateWithTimeIntervalSince1970:minDate];
@@ -247,7 +249,8 @@ double exp10( double value ) {
     int index = 4;
     if( 1 ) {
 #if TARGET_OS_IPHONE
-        UIColor *c = [UIColor  colorWithHue:(.1 * index) saturation:1.0 brightness:1.0 alpha:0.7];
+        // UIColor *c = [UIColor  colorWithHue:(.1 * index) saturation:1.0 brightness:1.0 alpha:0.7];
+        UIColor *c = [UIColor darkGrayColor];
         CPTColor *color = [CPTColor colorWithCGColor:c.CGColor];
 #else
         CPTColor *color = [CPTColor colorWithCGColor:[NSColor colorWithCalibratedHue:(.1 * index) saturation:1.0 brightness:1.0 alpha:0.7].CGColor];
@@ -269,8 +272,16 @@ double exp10( double value ) {
     }
     
     currentPlots = tempPlots;
-    [self findBoundaries];
-    [self generateLegend];
+    [self configureGraph];
+    
+    if( self.sensorData.count ) {
+        [self findBoundaries];
+        [self generateLegend];
+        [self adjustTimeScale];
+        [self adjustYScale];
+    }
+    
+   
 }
 @end
 
