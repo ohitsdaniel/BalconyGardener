@@ -17,7 +17,7 @@ function execute_action($action, $data)
 		case "waterPlant":
 			addWaterPlantLog("App", $data);
 			addWaterRequest($data);
-			echo "Plant Watered!";
+			echo "Plant Watered! " . $data["duration"];
 			break;
 		case "getWateringLog":
 			echo getWateringLog($data);
@@ -229,7 +229,7 @@ function addWaterRequest($data)
 	$duration = 0;
 	if(isset($data["duration"]))
 	{
-		$value = $duration["duration"];
+		$duration = $data["duration"];
 	}
 
 	$query = "INSERT INTO WaterRequests (DURATION) VALUES ($duration);";
