@@ -29,7 +29,7 @@ function execute_action($action, $data)
 			echo shouldWater($data);
 			break;
 		case "ackWater":
-			echo insertSensorData($data);
+			echo ackWater($data);
 			break;
 		default:
 			break;
@@ -238,15 +238,8 @@ function addWaterRequest($data)
 
 function ackWater()
 {
-	$duration = 0;
-	if(isset($data["duration"]))
-	{
-		$value = $data["duration"];
-	}
-
 	$query = "UPDATE WaterRequests SET ACKED = true WHERE TIMESTAMP_EXECUTED IS NULL;";
 	mysql_query($query);
 }
-
 
 ?>
