@@ -45,6 +45,7 @@ public class DataServer {
 				JSONObject humidity = humidityArray.getJSONObject(index);
 //			data.humidity = Double.parseDouble(humidity.getString(name));
 				result.humidity = humidity.getDouble("value");
+				result.timeHumidity = humidity.getString("time");
 			}
 
 			JSONArray moistureArray = json.getJSONArray("Moisture");
@@ -52,6 +53,7 @@ public class DataServer {
 				JSONObject moisture = moistureArray.getJSONObject(index);
 //			data.moisture = Double.parseDouble(moisture.getString("value"));
 				result.moisture = moisture.getDouble("value");
+				result.timeMoisture = moisture.getString("time");
 			}
 
 			JSONArray temperatureArray = json.getJSONArray("Temperature");
@@ -59,6 +61,7 @@ public class DataServer {
 				JSONObject temperature = temperatureArray.getJSONObject(index);
 //			data.temperature = Double.parseDouble(temperature.getString("value"));
 				result.temperature = temperature.getDouble("value");
+				result.timeTemperature = temperature.getString("time");
 			}
 			
 		} catch (JSONException e) {
@@ -265,7 +268,9 @@ public class DataServer {
 
 				HttpURLConnection con;
 				try {
+					int duration = 2;
 					String urlString = "http://146.0.40.96/balconygardener/service.php?action=waterPlant";
+					urlString += "&duration=" + duration;
 					URL url = new URL(urlString);
 					con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
@@ -276,11 +281,12 @@ public class DataServer {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 					String jsonString = reader.readLine();
 
-					if (jsonString.equals("Plant Watered!")) {
-						result = true;
-					}
+//					if (jsonString.equals("Plant Watered!")) {
+//						result = true;
+//					}
+					
 					con.disconnect();
-
+					result = true;
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
