@@ -17,7 +17,7 @@ function execute_action($action, $data)
 		case "waterPlant":
 			addWaterPlantLog("App", $data);
 			addWaterRequest($data);
-			echo "Plant Watered!";
+			echo "Plant Watered! ". $data["duration"];
 			break;
 		case "getWateringLog":
 			echo getWateringLog($data);
@@ -194,7 +194,7 @@ function getWateringLog($data)
 function shouldWater($data)
 {
 	$limit = limitString($count);
-	$res = mysql_query("SELECT COUNT(ID) AS CNT, DURATION FROM WaterRequests WHERE TIMESTAMP_EXECUTED=NULL ORDER BY TIMESTAMP DESC LIMIT 1");
+	$res = mysql_query("SELECT COUNT(ID) AS CNT, DURATION FROM WaterRequests WHERE TIMESTAMP_EXECUTED IS NULL AND ACKED = False ORDER BY TIMESTAMP DESC LIMIT 1");
 
 	$row = mysql_fetch_array($res, MYSQL_ASSOC);
 	return ($row["CNT"] == 0 ? 0 : $row["DURATION"]);
@@ -234,6 +234,18 @@ function addWaterRequest($data)
 	}
 
 	$query = "INSERT INTO WaterRequests (DURATION) VALUES ($duration);";
+	mysql_query($query);
+}
+
+function ackWater()
+{
+	$duration = 0;
+	if(isset($data["duration"]))
+	{
+		$value = $data["duration"];
+	}
+
+	$query = "UPDATE WaterRequests SET ACKED = true WHERE TIMESTAMP_EXECUTED IS NULL;";
 	mysql_query($query);
 }
 
