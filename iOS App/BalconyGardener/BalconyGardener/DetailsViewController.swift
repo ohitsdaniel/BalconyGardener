@@ -54,7 +54,7 @@ class DetailsViewController:UIViewController, UITableViewDataSource {
         }
         println(json)
         
-        tableView.reloadData()
+        dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -68,7 +68,7 @@ class DetailsViewController:UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier("MeasurementCell", forIndexPath:indexPath ) as UITableViewCell
         cell.textLabel?.text = "\(sensorData[indexPath.row].value)"
         cell.detailTextLabel?.text = "\(sensorData[indexPath.row].timeStamp)"
-        cell.backgroundColor = UIColor.yellowColor()
+       // cell.backgroundColor = UIColor.yellowColor()
         return cell
     }
 
