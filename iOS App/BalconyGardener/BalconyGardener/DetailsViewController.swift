@@ -20,10 +20,10 @@ class DetailsViewController:UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        url = "http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=\(sensorIdentifier)&count=20"
+        let urlString = "http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=\(sensorIdentifier)&count=20"
         var session = NSURLSession.sharedSession()
-        let urlNS = NSURL(string: url)
-        session.dataTaskWithURL(urlNS, completionHandler:didReceiveSensorData).resume()
+        let url:NSURL?  = NSURL(string: urlString)
+        session.dataTaskWithURL(url!, completionHandler:didReceiveSensorData).resume()
     }
     
     func didReceiveSensorData(data : NSData!, response: NSURLResponse!, error: NSError!){

@@ -26,8 +26,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     func loadSensorData() {
         var session = NSURLSession.sharedSession()
         // "http://146.0.40.96/balconygardener/service.php?action=sensors"
-        let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=getSensorData&count=1")
-        session.dataTaskWithURL(url, completionHandler:didReceiveSensorData).resume()
+        let url:NSURL? = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=getSensorData&count=1")
+        session.dataTaskWithURL(url!, completionHandler:didReceiveSensorData).resume()
         
     }
     
@@ -47,8 +47,8 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBAction func waterButtonPushed(sender: AnyObject) {
         var session = NSURLSession.sharedSession()
-        let url = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=waterPlant&duration=10")
-        session.dataTaskWithURL(url).resume()
+        let url:NSURL? = NSURL(string: "http://146.0.40.96/balconygardener/service.php?action=waterPlant&duration=10")
+        session.dataTaskWithURL(url!).resume()
         
         waterSignalSentText.hidden = false
         
