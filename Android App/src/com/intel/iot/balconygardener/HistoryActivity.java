@@ -24,19 +24,19 @@ public class HistoryActivity extends Activity {
 		final EditText historyView = (EditText) findViewById(R.id.editText1);
 		
 		DataServer server = new DataServer();
-		server.downloadData(null, 4, new DownloadHandler() {
+		server.downloadData(sensorName, 10, new DownloadHandler() {
 			
 			@Override
 			public void onDownloadedData(List<SensorData> data) {
 				
-				String history = "History of " + sensorName + " sensor\n";
+				String history = "History of " + sensorName + " sensor: \n";
 				for (int i = 0; i < data.size(); i++) {
 					if (sensorName.equals("Temperature")) {
-						history += data.get(i).temperature + "\n";
+						history += data.get(i).temperature + " @ " + data.get(i).timeTemperature + "\n";
 					} else if (sensorName.equals("Moisture")) {
-						history += data.get(i).moisture + "\n";
+						history += data.get(i).moisture + " @ " + data.get(i).timeMoisture + "\n";
 					} else if (sensorName.equals("Humidity")) {
-						history += data.get(i).humidity + "\n";
+						history += data.get(i).humidity + " @ " + data.get(i).timeHumidity + "\n";
 					}
 				}
 				
