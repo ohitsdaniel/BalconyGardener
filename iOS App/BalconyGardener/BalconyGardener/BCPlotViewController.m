@@ -22,7 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.dataSource = [[BCPlotDataSource alloc] init];
-    [self internalInit];
+    self.dataSource.hostView = self.view;
+    
+    // [self internalInit];
     self.view.backgroundColor = [UIColor yellowColor];
     // Do any additional setup after loading the view.
 }

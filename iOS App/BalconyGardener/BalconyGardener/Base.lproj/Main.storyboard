@@ -173,11 +173,12 @@
                         <viewControllerLayoutGuide type="top" id="uZr-gO-5cZ"/>
                         <viewControllerLayoutGuide type="bottom" id="aN0-sC-faB"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="MnN-a4-MKF">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="MnN-a4-MKF" customClass="CPTGraphHostingView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
                         <outlet property="graphHostView" destination="MnN-a4-MKF" id="gUF-rh-Ula"/>
                     </connections>
