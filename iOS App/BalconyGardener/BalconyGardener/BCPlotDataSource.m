@@ -101,13 +101,30 @@
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    return  self.sensorData.count;
+    NSUInteger count = self.sensorData.count;
+    NSLog( @"have %i records", (int) count );
+    return  count;
 }
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
     NSDictionary *valueDict = self.sensorData[index];
-    return valueDict[@"value"]; // [@(fieldEnum)];
+    NSNumber *value = nil;
+   
+    
+    switch ( fieldEnum ) {
+        case CPTBarPlotFieldBarLocation:
+            value = [NSNumber numberWithUnsignedInteger:index];
+            break;
+            
+        default:
+            
+            value = valueDict[@"value"];
+            // NSLog( @"Value %@ at %i", value, (int)index );
+            break;
+    }
+    
+    return value; // [@(fieldEnum)];
 }
 
 - (CPTPlotRange *)plotSpace:(CPTPlotSpace *)space
@@ -168,8 +185,8 @@ double exp10( double value ) {
     x.orthogonalCoordinateDecimal = CPTDecimalFromFloat( 0. );
     axisSet.yAxis.orthogonalCoordinateDecimal = CPTDecimalFromDouble( currentDisplayRange.location );
     
-    // x.majorIntervalLength   = CPTDecimalFromFloat(oneDay / 4.);
-    // x.minorTicksPerInterval = 5;
+    x.majorIntervalLength   = CPTDecimalFromFloat(oneDay / 24.);
+    x.minorTicksPerInterval = 0;
     x.labelFormatter         = timeFormatter;
 }
 
@@ -214,7 +231,8 @@ double exp10( double value ) {
     [dateUnFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     // does not work...
-    [dateUnFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    [dateUnFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    
     
     for( NSDictionary *d in self.sensorData ) {
         NSString *t = d[@"time"];

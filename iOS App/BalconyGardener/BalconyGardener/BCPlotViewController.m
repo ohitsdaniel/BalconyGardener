@@ -32,7 +32,7 @@
 - (void) viewWillAppear:(BOOL) animated {
     [super viewWillAppear:animated];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSString *sensorURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=%@&count=20", self.sensorIdentifier]];
+    NSString *sensorURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=%@&count=2000", self.sensorIdentifier]];
     
     [[session dataTaskWithURL:sensorURL
             completionHandler:^(NSData *data,
