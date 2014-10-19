@@ -9,17 +9,18 @@
 import Foundation
 import UIKit
 
-class DetailsViewController:UIViewController{
+class DetailsViewController:UIViewController, UITableViewDataSource {
 
     var sensorIdentifier = ""
     var sensorData = [SensorData]()
     
+    @IBOutlet weak var tableView: UITableView!
     private var url = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        url = "http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=\(sensorIdentifier)&count=10"
+        url = "http://146.0.40.96/balconygardener/service.php?action=getSensorData&sensorName=\(sensorIdentifier)&count=20"
         var session = NSURLSession.sharedSession()
         let urlNS = NSURL(string: url)
         session.dataTaskWithURL(urlNS, completionHandler:didReceiveSensorData).resume()
@@ -31,7 +32,9 @@ class DetailsViewController:UIViewController{
         //   println( "data is \(data)" )
         var json : AnyObject? = NSJSONSerialization.JSONObjectWithData( data, options: NSJSONReadingOptions.MutableContainers, error:error )
         
-        var dict = json as Dictionary<String,AnyObject>
+         if let d = json as Dictionary<String, AnyObject>? {
+        var dict = Dictionary<String, AnyObject>()
+            dict = d
         
         for d in dict{
             var arr:NSArray = d.1 as NSArray
@@ -42,13 +45,31 @@ class DetailsViewController:UIViewController{
             for i in arr{
                 val = i.valueForKey("value") as Double
                 time = i.valueForKey("time") as NSString
+                var dataToAdd = SensorData(sensorName: d.0, timeStamp: time, value: val)
+                            sensorData.append(dataToAdd)
             }
+
             
-            var dataToAdd = SensorData(sensorName: d.0, timeStamp: time, value: val)
-            
-            println(dataToAdd)
         }
+        }
+        println(json)
         
+        tableView.reloadData()
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return sensorData.count
+    }
+    
+    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("MeasurementCell", forIndexPath:indexPath ) as UITableViewCell
+        cell.textLabel?.text = "\(sensorData[indexPath.row].value)"
+        cell.detailTextLabel?.text = "\(sensorData[indexPath.row].timeStamp)"
+        cell.backgroundColor = UIColor.yellowColor()
+        return cell
     }
 
 }
