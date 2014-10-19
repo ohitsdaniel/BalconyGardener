@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BalconyGardener</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="Water">Water</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="moisture">Moisture</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="water_level">Water level</string>
+    <string name="last_time_watered">Last time watered</string>
+    <string name="log">Log</string>
+    
+</resources>

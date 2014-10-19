@@ -16,13 +16,20 @@ function execute_action($action, $data)
 			break;
 		case "waterPlant":
 			addWaterPlantLog("App", $data);
-			echo "Plant Watered!";
+			addWaterRequest($data);
+			echo "Plant Watered! " . $data["duration"];
 			break;
 		case "getWateringLog":
 			echo getWateringLog($data);
 			break;
 		case "insertSensorData":
 			echo insertSensorData($data);
+			break;
+		case "shouldWater":
+			echo shouldWater($data);
+			break;
+		case "ackWater":
+			echo ackWater($data);
 			break;
 		default:
 			break;
@@ -184,6 +191,14 @@ function getWateringLog($data)
 	return $json;
 }
 
+function shouldWater($data)
+{
+	$res = mysql_query("SELECT COUNT(ID) AS CNT, WaterRequests.DURATION FROM WaterRequests WHERE TIMESTAMP_EXECUTED IS NULL ORDER BY TIMESTAMP DESC LIMIT 1");
+
+	$row = mysql_fetch_array($res, MYSQL_ASSOC);
+	return ($row["CNT"] == 0 ? 0 : $row["DURATION"]);
+}
+
 function getSensorIdByName($name)
 {
 	$res = mysql_query("SELECT ID FROM Sensors WHERE NAME = '$name'");
@@ -206,6 +221,24 @@ function insertSensorData($data)
 	}
 	
 	$query = "INSERT INTO SensorValues (SENSOR_ID, VALUE) VALUES ($id, $value);";
+	mysql_query($query);
+}
+
+function addWaterRequest($data)
+{
+	$duration = 0;
+	if(isset($data["duration"]))
+	{
+		$duration = $data["duration"];
+	}
+
+	$query = "INSERT INTO WaterRequests (DURATION) VALUES ($duration);";
+	mysql_query($query);
+}
+
+function ackWater()
+{
+	$query = "UPDATE WaterRequests SET ACKED = true WHERE TIMESTAMP_EXECUTED IS NULL;";
 	mysql_query($query);
 }
 
